@@ -1,9 +1,11 @@
 import React from 'react'
+import Welcome from '@views/Welcome'
+
 import './styles/styles.css'
 
 function App() {
   return (
-    <div className='text-7xl'>App</div>
+    <Welcome />
   )
 }
 
