@@ -16,7 +16,8 @@ module.exports = {
       '@components': path.resolve(__dirname, 'src/components/'),
       '@hooks': path.resolve(__dirname, 'src/hooks/'),
       '@views': path.resolve(__dirname, 'src/views/'),
-      '@styles': path.resolve(__dirname, 'src/styles/')
+      '@styles': path.resolve(__dirname, 'src/styles/'),
+      '@fire': path.resolve(__dirname, 'src/firebase'),
     }
   },
   module: {
