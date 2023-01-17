@@ -2,6 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { login } from '../firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 import Buttons from '@components/Buttons'
 import Icons from '@components/Icons'
@@ -14,6 +16,8 @@ import InputsError from '../components/InputsError';
 
 
 function Login() {
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -26,7 +30,7 @@ function Login() {
         .required('Obligatorio'),
     }),
     onSubmit: values => {
-      console.log(values);
+      login(values, navigate)
     },
   });
 

@@ -1,9 +1,20 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { collection, addDoc, getFirestore } from "firebase/firestore";
+import Swal from "sweetalert2";
 import app from './config';
 
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+const checkError = (errorMsg) => {
+  if (errorMsg.includes("email-already-in-use")) {
+    return 'El correo electrónico ya se encuentra en uso.'
+  } else if (errorMsg.includes("wrong-password")) {
+    return 'Contraseña incorrecta.'
+  } else if (errorMsg.includes("user-not-found")) {
+    return 'El correo introducido no existe.'
+  }
+}
 
 const createUserIntoDB = async (userData) => {
   try {
@@ -14,20 +25,41 @@ const createUserIntoDB = async (userData) => {
   }
 }
 
-const registerNewUser = async (userData) => {
+const registerNewUser = async (userData, navigate) => {
   try {
     await createUserWithEmailAndPassword(auth, userData.email, userData.password)
     await createUserIntoDB(userData);
-    console.log("cuenta creada")
+    Swal.fire({
+      title: 'Usuario registrado correctamente!',
+      icon: 'success'
+    })
+    navigate('/login')
   } catch (error) {
+    const errorMessage = checkError(error.message)
+    Swal.fire({
+      title: 'Error al registrar el usuario',
+      icon: 'error',
+      text: errorMessage
+    })
     throw new Error(error);
   }
 }
 
-const login = async (loginData) => {
+const login = async (loginData, navigate) => {
   try {
-    await signInWithEmailAndPassword(auth, loginData.email, loginData.password)
+    await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
+    Swal.fire({
+      title: 'Inicio de sesión correcto!',
+      icon: 'success'
+    })
+    navigate('/home');
   } catch (error) {
+    const errorMessage = checkError(error.message)
+    Swal.fire({
+      title: 'Error al iniciar sesión',
+      icon: 'error',
+      text: errorMessage
+    })
     throw new Error(error);
   }
 }

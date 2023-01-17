@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { registerNewUser } from '@fire/auth';
@@ -16,6 +16,8 @@ import InputsError from '@components/InputsError';
 const requiredMessage = "Obligatorio";
 
 function Register() {
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       fullname: '',
@@ -34,7 +36,7 @@ function Register() {
       fullname: Yup.string().matches(/^[a-zA-Z\s]+$/, "Ingrese un nombre válido por favor").required(requiredMessage)
     }),
     onSubmit: registerData => {
-      registerNewUser(registerData)
+      registerNewUser(registerData, navigate)
     },
   });
 
